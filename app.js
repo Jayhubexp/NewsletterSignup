@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mailchimp = require("@mailchimp/mailchimp_marketing");
+require("dotenv").config();
 
 const app = express();
 const PORT = 5000;
@@ -11,8 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mailchimp Configuration
 mailchimp.setConfig({
-	apiKey: "a9dc29bb5359b72ba979ebcdd33b0d63-us21", // Replace with your API key
-	server: "us21", // Replace with your server prefix (e.g., 'us21')
+	apiKey: process.env.MAILCHIMP_API_KEY,
+	server: process.env.MAILCHIMP_SERVER,
 });
 
 // Route for displaying the signup page
@@ -24,7 +25,7 @@ app.get("/", function (req, res) {
 app.post("/", async function (req, res) {
 	const { fName, lName, email } = req.body;
 
-	const listId = "efea33be87"; // Replace with your audience ID
+	const listId = process.env.LIST_ID;
 	const subscribingUser = {
 		firstName: fName,
 		lastName: lName,
